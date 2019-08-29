@@ -8,9 +8,43 @@
   <div class="card-body">
     <h5 class="card-title" style="color: 000034;">{{classroom.name}} {{classroom.subject}}</h5>
     <p class="card-text" style="color: 000034;">{{classroom.year}}</p>
+
+<ul class="list-group list-group-flush">
+    
+    <table style="width:100%">
+  <tr>
+    <th>Firstname</th>
+    <th>ExamGrade</th> 
+  </tr>
+  {% for student in students %}
+    <tr>
+    <td>{{student.name}} 
+      {% if request.user.is_staff or request.user == classroom.Teacher  %}
+      <a href="{% url 'student-delete' student.id %}" class="btn" style="background-color: #FFA500; color: #000034;">Delete</a></td>
+      {% endif %} 
+    <td>{{student.exam_grade }} </td>
+    {% if request.user.is_staff or request.user == classroom.Teacher  %}
+    <td><a href="{% url 'student-update' student.id %}" class="btn" style="background-color: #FFA500; color: #000034;">update</a></td>
+    </tr>
+    {% endif %}
+
+    {% endfor %}
+    </table>
+
+    {% if request.user.is_staff or request.user == classroom.Teacher  %}
     <a href="{% url 'classroom-update' classroom.id %}" class="btn" style="background-color: #000034; color: white;">Update</a>
+	 <a href="{% url 'student-create' classroom.id %}" class="btn" style="background-color: #FFA500; color: #000034;">Add student</a>
+
+	{% endif %}
+	
+	 {% if request.user.is_staff%}
+
     <a href="{% url 'classroom-delete' classroom.id %}" class="btn" style="background-color: #FFA500; color: #000034;">Delete</a>
+     {% endif %} 
+
   </div>
+
+
 </div>
 
 {% endblock content %}
